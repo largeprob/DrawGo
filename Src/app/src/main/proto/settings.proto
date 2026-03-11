@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+// 必须声明包名，对应你的 Kotlin 包
+option java_package = "com.largeprob.drawgo";
+option java_multiple_files = true;
+
+
+//工具栏排列方式
+enum ToolbarOrientationProto {
+  //水平排列
+  HORIZONTAL = 0;
+  //垂直排列
+  VERTICAL = 1;
+}
+
+//笔刷
+enum BrushTypeProto {
+  // 实线/均匀粗细
+  FeltTipPen = 0;
+  // 虚线
+  DashedLine = 1;
+  // 毛笔/笔锋
+  CalligraphyBrush = 2;
+
+  //橡皮擦
+  StrokeEraser=99;
+}
+
+//笔刷配置
+message BrushConfigProto {
+  //笔刷类型
+  BrushTypeProto type = 1;
+  // Color 通常以 Int (ARGB) 形式存储
+  int32 color = 2;
+  //粗细
+  float width = 3;
+  //不透明度
+  float alpha = 4;
+}
+
+
+//全局配置信息
+message DrawingDataProto {
+  // 画布是否可见
+  bool canvas_visible = 1;
+  // 是否启用画布“触摸穿透”模式
+  bool canvas_passthrough = 2;
+  // 退出时是否自动清空画布
+  bool auto_clear_canvas = 3;
+  // 启动服务时是否默认显示画布
+  bool visible_on_start = 4;
+  // 笔刷配置
+  BrushTypeProto current_brush_type = 5;
+  // Map 类型：键为枚举，值为消息
+  map<int32, BrushConfigProto> brush_configs = 6;
+
+  // 工具栏和抽屉配置
+  ToolbarOrientationProto toolbar_orientation = 7;
+  //工具栏位置
+  float toolbar_offset_x = 8;
+  float toolbar_offset_y = 9;
+
+  bool first_drawer_open = 10;
+  bool second_drawer_open = 11;
+
+  // 按钮集合配置 (使用 repeated string)
+  repeated string first_drawer_buttons = 12;
+  repeated string second_drawer_buttons = 13;
+  repeated string second_drawer_pinned_buttons = 14;
+
+  //服务是否运行中
+  bool service_running = 15;
+}
